@@ -17,25 +17,62 @@ interface QuickAction {
 }
 
 const quickActions: QuickAction[] = [
-  { id: "1", label: "Pricing",      message: "Tell me about your pricing plans" },
-  { id: "2", label: "Services",     message: "What services do you offer?" },
-  { id: "3", label: "Empanelment",  message: "How do I get empaneled with you?" },
+  { id: "1", label: "Pricing", message: "Tell me about your pricing plans" },
+  { id: "2", label: "Services", message: "What services do you offer?" },
+  { id: "3", label: "Empanelment", message: "How do I get empaneled with you?" },
   { id: "4", label: "Contact Team", message: "I want to speak with someone" },
+  { id: "5", label: "Portfolio Simulator", message: "How do I simulate my portfolio?" },
+  { id: "6", label: "Investment Advice", message: "Where should I invest my money?" },
+  { id: "7", label: "Risk Profile", message: "How do I check my risk profile?" },
 ];
 
 const botResponses: Record<string, string> = {
-  greeting: "Hello! 👋 I'm your AI Assistant. How can I help you today?",
+  greeting: "Hello! 👋 I'm Alpha's AI Assistant. How can I help you today?\n\nYou can ask me about our services, tools, or investment topics!",
   pricing: "We offer flexible pricing plans tailored to your needs.\n\n→ Basic consultation starts at ₹5,000/month\n→ Comprehensive empanelment packages available\n\nWould you like details on a specific plan?",
-  services: "We provide:\n• Financial Consulting\n• Empanelment Services\n• Advisory Services\n• Wealth Management\n• Corporate Training\n\nWhich one interests you most?",
+  services: "We provide:\n• Financial Consulting\n• Empanelment Services\n• Advisory Services\n• Wealth Management\n• Corporate Training\n\nWe also have free online tools — Portfolio Simulator, Risk Analyzer, and Investment Suggestions. Would you like to try one?",
   empanelment: "Our empanelment process is straightforward:\n1. Submit your basic details\n2. Initial screening (1–3 days)\n3. Submit documents\n4. Final approval\n\nWould you like to start the application now?",
   contact: "Great choice! I'm connecting you with a real team member right away.\nA specialist should join you within 1–3 minutes. Feel free to keep chatting here meanwhile 😊",
-  fallback: "Hmm, I'm not 100% sure I understood that perfectly.\nCould you tell me a bit more? Or would you like to speak with our team directly?",
-  help: "I'm here to help! You can ask about:\n• Pricing & plans\n• Our services\n• Empanelment process\n• General questions\n\nWhat would you like to know?",
+  fallback: "Hmm, I'm not 100% sure I understood that.\nCould you tell me a bit more? Or choose a quick option below — I can guide you to our Portfolio Simulator, Risk Analyzer, or connect you with our team!",
+  help: "I'm here to help! You can ask about:\n• Pricing & plans\n• Our services\n• Empanelment process\n• Portfolio Simulator 📊\n• Investment Suggestions 💡\n• Risk Analyzer 🎯\n• Price Alerts 🔔\n• SIP & market info\n\nWhat would you like to know?",
+
+  // New feature intents
+  portfolio: "📊 Our Portfolio Simulator lets you:\n\n1. Select a stock (Reliance, TCS, HDFC, etc.)\n2. Enter the amount you invested\n3. Enter your buy date and price\n\nIt instantly calculates your profit or loss and saves the history!\n\n👉 Go to the 'Tools' page to try it.",
+  investment: "💡 Not sure where to invest? Use our Investment Suggestion tool!\n\nJust tell us:\n• Your budget (₹)\n• Your risk appetite (Low / Medium / High)\n\nWe'll give you tailored recommendations — FDs, mutual funds, stocks, and more.\n\n👉 Scroll to the bottom of our Services page!",
+  alert: "🔔 You can set Price Alerts for any stock!\n\n• Choose a stock (e.g. RELIANCE, TCS)\n• Set your target price\n• Choose 'above' or 'below'\n• Enter your email\n\nWe check prices every 30 seconds and notify you instantly!\n\n👉 Visit our Tools page to set an alert.",
+  risk: "🎯 Our Risk Analyzer helps you understand your investment personality:\n\n1. Enter your monthly income & savings\n2. Select your investment goal (Retirement, Education, Wealth, Emergency)\n\nYou'll get a Conservative / Moderate / Aggressive profile with a customised asset allocation chart!\n\n👉 Try it on the Services page.",
+  sip: "📅 SIP (Systematic Investment Plan) is one of the best ways to invest!\n\n• Start with as low as ₹500/month\n• Rupee cost averaging reduces risk\n• Best for 5+ year goals\n• Ideal for index funds and mutual funds\n\nWould you like us to suggest the right SIP for your budget?",
+  market: "🕐 Indian Stock Market Hours:\n\n• NSE / BSE: 9:15 AM – 3:30 PM IST\n• Monday to Friday (excluding holidays)\n\nOur live stock ticker at the bottom shows real-time data during market hours.",
 };
 
 function getBotResponse(text: string): { response: string; shouldConnect?: boolean } {
   const lower = text.toLowerCase();
 
+  // Greetings first (short messages only)
+  if (/^(hi|hello|hey|greetings|namaste)[!. ]*$/i.test(lower.trim())) {
+    return { response: botResponses.greeting };
+  }
+
+  // Feature intents – checked before generic ones
+  if (/portfolio|simulate|profit|loss|return|investment calculator/i.test(lower)) {
+    return { response: botResponses.portfolio };
+  }
+  if (/where.*invest|suggest.*invest|investment advice|budget.*invest|invest.*budget|what.*invest/i.test(lower)) {
+    return { response: botResponses.investment };
+  }
+  if (/alert|notify|watchlist|price alert|price notification/i.test(lower)) {
+    return { response: botResponses.alert };
+  }
+  if (/risk|risk profile|risk analysi|conservative|aggressive|moderate investor/i.test(lower)) {
+    return { response: botResponses.risk };
+  }
+  if (/sip|systematic investment|monthly invest/i.test(lower)) {
+    return { response: botResponses.sip };
+  }
+  if (/market.*open|market.*hours?|nse|bse|trading.*time|market.*time/i.test(lower)) {
+    return { response: botResponses.market };
+  }
+
+  // Existing intents
   if (/price|cost|plan|pricing|subscription|fee/i.test(lower)) {
     return { response: botResponses.pricing };
   }
@@ -48,10 +85,7 @@ function getBotResponse(text: string): { response: string; shouldConnect?: boole
   if (/contact|team|speak|talk|human|person|executive|consultant|call|phone/i.test(lower)) {
     return { response: botResponses.contact, shouldConnect: true };
   }
-  if (/hi|hello|hey|greetings/i.test(lower) && lower.length < 30) {
-    return { response: botResponses.greeting };
-  }
-  if (/help|can you|what can you do/i.test(lower)) {
+  if (/help|can you|what can you do|what do you know/i.test(lower)) {
     return { response: botResponses.help };
   }
 
@@ -181,11 +215,10 @@ export function FloatingChat() {
                   className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"}`}
                 >
                   <div
-                    className={`max-w-[82%] px-4 py-3 rounded-2xl text-sm leading-relaxed whitespace-pre-wrap ${
-                      msg.sender === "user"
+                    className={`max-w-[82%] px-4 py-3 rounded-2xl text-sm leading-relaxed whitespace-pre-wrap ${msg.sender === "user"
                         ? "bg-yellow-500 text-slate-900 rounded-br-none font-medium"
                         : "bg-slate-800 text-slate-100 rounded-bl-none border border-slate-700/60"
-                    }`}
+                      }`}
                   >
                     {msg.text}
                     <div className="text-xs opacity-50 mt-1.5 text-right">

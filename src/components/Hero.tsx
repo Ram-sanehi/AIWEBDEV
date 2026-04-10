@@ -58,24 +58,35 @@ export function Hero() {
   }, []);
 
   return (
-    <section ref={heroRef} className="relative min-h-[90vh] flex items-center overflow-hidden hero-gradient">
+    <section ref={heroRef} className="relative min-h-[90vh] flex items-center pt-24 lg:pt-32 overflow-hidden">
+      {/* Background Image with Overlay */}
+      <div className="absolute inset-0 z-0">
+        <img
+          src="/images/hero_bg.png"
+          alt="Financial Advisory"
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-slate-950/80 backdrop-blur-[2px]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-slate-950/50 to-slate-950" />
+      </div>
+
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden">
-        <div 
+        <div
           className="absolute top-0 left-0 w-[600px] h-[600px] animate-morph-blob opacity-60"
           style={{
             background: 'radial-gradient(circle at 30% 40%, rgba(59, 130, 246, 0.15) 0%, rgba(147, 51, 234, 0.1) 40%, rgba(6, 182, 212, 0.05) 70%, transparent 100%)',
             filter: 'blur(80px)',
           }}
         />
-        <div 
+        <div
           className="absolute bottom-0 right-0 w-[500px] h-[500px] animate-morph-blob-delayed opacity-50"
           style={{
             background: 'radial-gradient(circle at 70% 60%, rgba(6, 182, 212, 0.12) 0%, rgba(147, 51, 234, 0.08) 50%, rgba(59, 130, 246, 0.04) 80%, transparent 100%)',
             filter: 'blur(70px)',
           }}
         />
-        <div 
+        <div
           ref={glowRef}
           className="absolute pointer-events-none z-5"
           style={{
@@ -88,7 +99,7 @@ export function Hero() {
       </div>
 
       {/* Grid pattern overlay */}
-      <div 
+      <div
         className="absolute inset-0 opacity-5"
         style={{
           backgroundImage: `linear-gradient(rgba(218, 165, 32, 0.1) 1px, transparent 1px), 
@@ -144,8 +155,8 @@ export function Hero() {
               transition={{ delay: 0.4 }}
               className="text-lg text-muted-foreground max-w-xl"
             >
-              We provide comprehensive wealth management solutions tailored to your unique 
-              financial goals. Our expert team helps you navigate the complexities of 
+              We provide comprehensive wealth management solutions tailored to your unique
+              financial goals. Our expert team helps you navigate the complexities of
               investment planning with confidence.
             </motion.p>
 
@@ -185,9 +196,8 @@ export function Hero() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5 + index * 0.1 }}
-                className={`glass-card rounded-xl p-6 hover-glow hover:border-primary/50 group cursor-pointer ${
-                  index === 1 || index === 2 ? "translate-y-8" : ""
-                }`}
+                className={`glass-card rounded-xl p-6 hover-glow hover:border-primary/50 group cursor-pointer ${index === 1 || index === 2 ? "translate-y-8" : ""
+                  }`}
               >
                 <div className="w-12 h-12 rounded-lg gold-gradient flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                   <item.icon className="h-6 w-6 text-primary-foreground" />

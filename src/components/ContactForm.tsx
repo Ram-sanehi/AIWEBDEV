@@ -6,8 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
-import { supabase } from "@/integrations/supabase/client";
-import { sendContactFormEmail } from "@/api/email";
+import { submitContactForm } from "@/api/contact";
 import { z } from "zod";
 
 const contactSchema = z.object({
@@ -52,32 +51,14 @@ export function ContactForm() {
       // Validate form data
       const validatedData = contactSchema.parse(formData);
 
-      // Submit to Supabase
-      const { error } = await supabase.from("contact_submissions").insert([
-        {
-          name: validatedData.name,
-          email: validatedData.email,
-          phone: validatedData.phone,
-          subject: validatedData.subject,
-          message: validatedData.message,
-        },
-      ]);
-
-      if (error) throw error;
-
-      // Send email via Resend
-      try {
-        await sendContactFormEmail(
-          validatedData.name,
-          validatedData.email,
-          validatedData.phone,
-          validatedData.subject,
-          validatedData.message
-        );
-      } catch (emailError) {
-        console.error("Email send error:", emailError);
-        // Don't fail the form submission if email fails
-      }
+      // Submit to MySQL database
+      await submitContactForm({
+        name: validatedData.name,
+        email: validatedData.email,
+        phone: validatedData.phone,
+        subject: validatedData.subject,
+        message: validatedData.message,
+      });
 
       setIsSuccess(true);
       setFormData({ name: "", email: "", phone: "", subject: "", message: "" });

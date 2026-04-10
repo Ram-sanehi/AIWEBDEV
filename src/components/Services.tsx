@@ -1,12 +1,12 @@
 import { motion } from "framer-motion";
-import { 
-  TrendingUp, 
-  PiggyBank, 
-  Shield, 
-  Building2, 
-  Calculator, 
+import {
+  TrendingUp,
+  PiggyBank,
+  Shield,
+  Building2,
+  Calculator,
   Briefcase,
-  ArrowRight 
+  ArrowRight
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -52,7 +52,7 @@ const services = [
 
 export function Services() {
   return (
-    <section className="py-24 bg-background">
+    <section className="py-12 lg:py-20 bg-background">
       <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -64,7 +64,7 @@ export function Services() {
             Comprehensive <span className="gold-text">Financial Solutions</span>
           </h2>
           <p className="text-muted-foreground text-lg">
-            We offer a complete range of financial services designed to help you achieve 
+            We offer a complete range of financial services designed to help you achieve
             your financial objectives and secure your future.
           </p>
         </motion.div>
@@ -77,16 +77,16 @@ export function Services() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
-              className="group glass-card rounded-2xl p-8 hover-glow transition-all duration-300 hover:border-primary/50"
+              className="group glass-card rounded-2xl p-8 hover-glow transition-all duration-300 hover:border-primary/50 hover:scale-[1.02] hover:shadow-2xl hover:shadow-primary/5"
             >
               <div className="w-14 h-14 rounded-xl gold-gradient flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                 <service.icon className="h-7 w-7 text-primary-foreground" />
               </div>
-              
+
               <h3 className="text-xl font-semibold mb-3 group-hover:text-primary transition-colors">
                 {service.title}
               </h3>
-              
+
               <p className="text-muted-foreground mb-4">
                 {service.description}
               </p>
@@ -100,8 +100,8 @@ export function Services() {
                 ))}
               </ul>
 
-              <Link 
-                to="/services" 
+              <Link
+                to="/services"
                 className="inline-flex items-center gap-2 text-primary text-sm font-medium hover:gap-3 transition-all"
               >
                 Learn More <ArrowRight className="h-4 w-4" />

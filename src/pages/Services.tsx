@@ -3,13 +3,14 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Navbar } from "@/components/Navbar";
 import { StockTicker } from "@/components/StockTicker";
 import { Footer } from "@/components/Footer";
+import { SEO } from "@/components/SEO";
 import { CTA } from "@/components/CTA";
-import { 
-  TrendingUp, 
-  PiggyBank, 
-  Shield, 
-  Building2, 
-  Calculator, 
+import {
+  TrendingUp,
+  PiggyBank,
+  Shield,
+  Building2,
+  Calculator,
   Briefcase,
   ChevronDown,
   Check
@@ -189,11 +190,15 @@ const ServicesPage = () => {
 
   return (
     <div className="min-h-screen bg-background pb-20">
+      <SEO
+        title="Our Services"
+        description="Explore our range of financial services including investment management, retirement planning, tax saving, and more."
+      />
       <Navbar />
       <StockTicker />
 
       {/* Hero Section */}
-      <section className="py-24 hero-gradient relative overflow-hidden">
+      <section className="py-12 lg:py-20 hero-gradient relative overflow-hidden">
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
         </div>
@@ -208,7 +213,7 @@ const ServicesPage = () => {
               <span className="gold-text">Financial Solutions</span>
             </h1>
             <p className="text-lg text-muted-foreground">
-              We offer a complete range of financial services designed to help you 
+              We offer a complete range of financial services designed to help you
               achieve your financial objectives and secure your future.
             </p>
           </motion.div>
@@ -216,7 +221,7 @@ const ServicesPage = () => {
       </section>
 
       {/* Services Grid */}
-      <section className="py-24">
+      <section className="py-12 lg:py-20">
         <div className="container mx-auto px-4">
           <div className="space-y-6">
             {services.map((service, index) => (
@@ -226,7 +231,7 @@ const ServicesPage = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                className="glass-card rounded-2xl overflow-hidden hover-glow hover:border-primary/50"
+                className="glass-card rounded-2xl overflow-hidden hover-glow hover:border-primary/50 hover:scale-[1.01] hover:shadow-xl transition-all duration-300"
               >
                 {/* Service Header */}
                 <button
@@ -240,10 +245,9 @@ const ServicesPage = () => {
                     <h3 className="text-xl font-semibold mb-2">{service.title}</h3>
                     <p className="text-muted-foreground">{service.description}</p>
                   </div>
-                  <ChevronDown 
-                    className={`h-6 w-6 text-primary transition-transform ${
-                      expandedService === index ? "rotate-180" : ""
-                    }`} 
+                  <ChevronDown
+                    className={`h-6 w-6 text-primary transition-transform ${expandedService === index ? "rotate-180" : ""
+                      }`}
                   />
                 </button>
 
@@ -336,7 +340,10 @@ const ServicesPage = () => {
       </section>
 
       <CTA />
-      <Footer />
+
+      <div className="bg-background">
+        <Footer />
+      </div>
     </div>
   );
 };

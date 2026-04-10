@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 
 export function CTA() {
   return (
-    <section className="py-24 relative overflow-hidden">
+    <section className="py-12 lg:py-20 relative overflow-hidden">
       {/* Background gradient */}
       <div className="absolute inset-0 gold-gradient opacity-10" />
       <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background" />
@@ -22,7 +22,7 @@ export function CTA() {
             <span className="gold-text">Investment Journey?</span>
           </h2>
           <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Take the first step towards financial freedom. Our expert advisors are ready 
+            Take the first step towards financial freedom. Our expert advisors are ready
             to create a personalized investment strategy tailored to your goals.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">

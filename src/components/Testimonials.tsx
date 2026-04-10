@@ -7,105 +7,31 @@ const testimonials = [
     id: 1,
     name: "Rajesh Kumar",
     role: "Business Owner",
+    image: "/images/testimonials/user1.png",
     rating: 5,
-    content: "Alpha Investment has transformed my financial outlook. Their personalized approach and expert guidance helped me build a diversified portfolio that has grown consistently over the years.",
+    content: "Alpha Investment has transformed my financial outlook. Their personalized approach and expert guidance helped me build a diversified portfolio that has grown consistently.",
   },
   {
     id: 2,
     name: "Priya Sharma",
     role: "IT Professional",
+    image: "/images/testimonials/user2.png",
     rating: 5,
-    content: "I was completely new to investing, but the team made everything so simple to understand. Their patience in explaining concepts and transparent approach built my confidence in financial planning.",
+    content: "I was completely new to investing, but the team made everything so simple. Their transparent approach built my confidence in financial planning and wealth management.",
   },
   {
     id: 3,
     name: "Amit Patel",
     role: "Doctor",
+    image: "/images/testimonials/user3.png",
     rating: 5,
-    content: "Outstanding service! The retirement planning strategy they created for me gives me peace of mind knowing my family's future is secure. Highly recommend their services.",
-  },
-  {
-    id: 4,
-    name: "Sneha Reddy",
-    role: "Entrepreneur",
-    rating: 5,
-    content: "The tax planning strategies they implemented saved me significantly. Their holistic approach to wealth management is exactly what I was looking for.",
-  },
-  {
-    id: 5,
-    name: "Vikram Singh",
-    role: "Engineer",
-    rating: 5,
-    content: "The team at Alpha Investment is always available to answer my questions. Their advice is practical and tailored to my needs. I feel confident about my financial future.",
-  },
-  {
-    id: 6,
-    name: "Meera Joshi",
-    role: "Teacher",
-    rating: 5,
-    content: "I appreciate the transparency and honesty in their recommendations. My savings have grown steadily, and I trust them completely.",
-  },
-  {
-    id: 7,
-    name: "Suresh Nair",
-    role: "Small Business Owner",
-    rating: 5,
-    content: "Their expertise in investment and tax planning has helped my business thrive. I highly recommend Alpha Investment to anyone seeking professional financial guidance.",
+    content: "Outstanding service! The retirement planning strategy they created for me gives me peace of mind knowing my family's future is secure. Highly recommend them.",
   },
 ];
 
 export function Testimonials() {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const cardRef = useRef<HTMLDivElement>(null);
-  const glowRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % testimonials.length);
-    }, 5000);
-    return () => clearInterval(interval);
-  }, []);
-
-  useEffect(() => {
-    const card = cardRef.current;
-    const glow = glowRef.current;
-    if (!card || !glow) return;
-
-    let mouseX = 0;
-    let mouseY = 0;
-    let glowX = 0;
-    let glowY = 0;
-    let animationId: number;
-
-    const updateGlow = () => {
-      glowX += (mouseX - glowX) * 0.05;
-      glowY += (mouseY - glowY) * 0.05;
-      glow.style.transform = `translate(${glowX - 150}px, ${glowY - 150}px)`;
-      animationId = requestAnimationFrame(updateGlow);
-    };
-
-    const handleMouseMove = (e: MouseEvent) => {
-      const rect = card.getBoundingClientRect();
-      mouseX = e.clientX - rect.left;
-      mouseY = e.clientY - rect.top;
-    };
-
-    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-    if (!isTouchDevice) {
-      card.addEventListener('mousemove', handleMouseMove);
-      updateGlow();
-    }
-
-    return () => {
-      card.removeEventListener('mousemove', handleMouseMove);
-      if (animationId) {
-        cancelAnimationFrame(animationId);
-      }
-    };
-  }, []);
-
   return (
-    <section className="py-24 bg-secondary/30 overflow-hidden">
+    <section className="py-12 lg:py-20 bg-secondary/30 overflow-hidden">
       <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -121,53 +47,39 @@ export function Testimonials() {
           </p>
         </motion.div>
 
-        <div className="relative max-w-4xl mx-auto">
-          <AnimatePresence mode="wait">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {testimonials.map((testimonial, index) => (
             <motion.div
-              key={currentIndex}
-              initial={{ opacity: 0, x: 50 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -50 }}
-              transition={{ duration: 0.5 }}
-              ref={cardRef}
-              className="glass-card rounded-2xl p-8 md:p-12 text-center relative hover-glow hover:border-primary/50"
+              key={testimonial.id}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.1, duration: 0.5 }}
+              className="glass-card rounded-2xl p-8 hover-glow hover:border-primary/50 hover:scale-[1.02] hover:shadow-xl transition-all duration-300 relative group"
             >
-              {/* Cursor glow effect - Center */}
-              <div 
-                ref={glowRef}
-                className="absolute pointer-events-none z-0 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 animate-pulse"
-                style={{
-                  width: '300px',
-                  height: '300px',
-                  background: 'radial-gradient(circle, rgba(218, 165, 32, 0.12) 0%, rgba(59, 130, 246, 0.06) 40%, rgba(6, 182, 212, 0.04) 70%, transparent 100%)',
-                  filter: 'blur(50px)',
-                }}
-              />
-              
-              <Quote className="absolute top-6 left-6 h-12 w-12 text-primary/20 z-10" />
-              
-              <div className="relative z-10">
-                {/* Image removed as requested */}
+              <Quote className="absolute top-6 right-6 h-8 w-8 text-primary/10 group-hover:text-primary/20 transition-colors" />
 
-                <div className="flex items-center justify-center gap-1 mb-4">
-                  {[...Array(testimonials[currentIndex].rating)].map((_, i) => (
-                    <Star key={i} className="h-5 w-5 fill-primary text-primary" />
-                  ))}
+              <div className="flex items-center gap-4 mb-6">
+                <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-primary/20">
+                  <img src={testimonial.image} alt={testimonial.name} className="w-full h-full object-cover" />
                 </div>
-
-                <p className="text-lg md:text-xl text-foreground/90 italic mb-6 max-w-2xl mx-auto">
-                  "{testimonials[currentIndex].content}"
-                </p>
-
-                <h4 className="text-lg font-semibold gold-text">
-                  {testimonials[currentIndex].name}
-                </h4>
-                <p className="text-muted-foreground">
-                  {testimonials[currentIndex].role}
-                </p>
+                <div>
+                  <h4 className="font-semibold gold-text">{testimonial.name}</h4>
+                  <p className="text-xs text-muted-foreground">{testimonial.role}</p>
+                </div>
               </div>
+
+              <div className="flex gap-1 mb-4">
+                {[...Array(testimonial.rating)].map((_, i) => (
+                  <Star key={i} className="h-4 w-4 fill-primary text-primary" />
+                ))}
+              </div>
+
+              <p className="text-muted-foreground italic text-sm leading-relaxed">
+                "{testimonial.content}"
+              </p>
             </motion.div>
-          </AnimatePresence>
+          ))}
         </div>
       </div>
     </section>

@@ -13,7 +13,11 @@ import Contact from "./pages/Contact";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfService from "./pages/TermsOfService";
 import Disclaimer from "./pages/Disclaimer";
+import Tools from "./pages/Tools";
+import Blog from "./pages/Blog";
+import BlogPost from "./pages/BlogPost";
 import NotFound from "./pages/NotFound";
+import { FloatingChat } from "@/components/FloatingChat";
 
 const queryClient = new QueryClient();
 
@@ -41,6 +45,9 @@ function AppRoutes() {
         <Route path="/privacy" element={<PrivacyPolicy />} />
         <Route path="/terms" element={<TermsOfService />} />
         <Route path="/disclaimer" element={<Disclaimer />} />
+        <Route path="/tools" element={<Tools />} />
+        <Route path="/blog" element={<Blog />} />
+        <Route path="/blog/:id" element={<BlogPost />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </>
@@ -56,6 +63,7 @@ function App() {
         <BrowserRouter>
           <AppRoutes />
         </BrowserRouter>
+        <FloatingChat />
       </TooltipProvider>
     </QueryClientProvider>
   );

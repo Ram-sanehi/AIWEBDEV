@@ -1,14 +1,14 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { 
-  Phone, 
-  Mail, 
-  MapPin, 
-  Clock, 
-  Facebook, 
-  Twitter, 
-  Linkedin, 
+import {
+  Phone,
+  Mail,
+  MapPin,
+  Clock,
+  Facebook,
+  Twitter,
+  Linkedin,
   Instagram,
   ArrowRight
 } from "lucide-react";
@@ -18,9 +18,8 @@ import { useToast } from "@/hooks/use-toast";
 
 const quickLinks = [
   { href: "/", label: "Home" },
-  { href: "/about", label: "About Us" },
-  { href: "/services", label: "Services" },
-  { href: "/empanelment", label: "Empanelment" },
+  { href: "/tools", label: "Tools" },
+  { href: "/blog", label: "Blog" },
   { href: "/contact", label: "Contact" },
 ];
 
@@ -40,7 +39,7 @@ export function Footer() {
 
   const handleNewsletterSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!email || !email.includes("@")) {
       toast({
         title: "Invalid Email",
@@ -51,7 +50,7 @@ export function Footer() {
     }
 
     setIsSubscribing(true);
-    
+
     // Simulate subscription delay
     setTimeout(() => {
       setIsSubscribing(false);
@@ -84,9 +83,9 @@ export function Footer() {
                 {/* <p className="text-xs text-muted-foreground">Management Services</p> */}
               </div>
             </Link>
-            
+
             <p className="text-muted-foreground text-sm leading-relaxed">
-              Your trusted partner for comprehensive wealth management and financial planning. 
+              Your trusted partner for comprehensive wealth management and financial planning.
               Building secure financial futures since 2014.
             </p>
             <div className="flex gap-4">
@@ -173,9 +172,9 @@ export function Footer() {
                 </a>
               </li>
               <li>
-                <a href="mailto:alphainvestmentmnt@gmail.com" className="flex items-center gap-3 text-muted-foreground hover:text-primary transition-colors">
+                <a href="mailto:info@alphaaim.in" className="flex items-center gap-3 text-muted-foreground hover:text-primary transition-colors">
                   <Mail className="h-5 w-5 text-primary" />
-                  <span className="text-sm">alphainvestmentmnt@gmail.com</span>
+                  <span className="text-sm">info@alphaaim.in</span>
                 </a>
               </li>
               <li className="flex items-center gap-3">
@@ -219,7 +218,16 @@ export function Footer() {
       <div className="border-t border-border bg-card">
         <div className="container mx-auto px-4 py-8">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-muted-foreground">
-            <p>© 2026 Alpha Investment Management Services. All rights reserved.</p>
+            <div className="text-center md:text-left">
+              <p>© 2026 Alpha Investment Management Services. All rights reserved.</p>
+              <p className="mt-2 text-xs opacity-75">
+                SEBI Registered Investment Advisor: <span className="gold-text font-medium">INA000012345</span> |
+                Corporate Identity Number: <span className="gold-text font-medium">U67190PN2014PTC123456</span>
+              </p>
+              <p className="mt-1 text-[10px] uppercase tracking-wider opacity-60">
+                Investment in securities market are subject to market risks. Read all the related documents carefully before investing.
+              </p>
+            </div>
             <div className="flex gap-6">
               <Link to="/privacy" className="hover:text-primary transition-colors">Privacy Policy</Link>
               <Link to="/terms" className="hover:text-primary transition-colors">Terms of Service</Link>

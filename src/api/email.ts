@@ -16,7 +16,7 @@ export async function sendContactFormEmail(
       },
       body: JSON.stringify({
         from: "onboarding@resend.dev",
-        to: "alphainvestmentmnt@gmail.com",
+        to: "info@alphaaim.in",
         replyTo: email,
         subject: `New Contact Form Submission: ${subject}`,
         html: `

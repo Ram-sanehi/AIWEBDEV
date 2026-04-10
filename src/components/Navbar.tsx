@@ -8,6 +8,8 @@ const navLinks = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About Us" },
   { href: "/services", label: "Services" },
+  { href: "/tools", label: "Tools" },
+  { href: "/blog", label: "Blog" },
   { href: "/empanelment", label: "Empanelment" },
   { href: "/contact", label: "Contact" },
 ];
@@ -39,9 +41,9 @@ export function Navbar() {
               <Phone className="h-4 w-4" />
               +91 9607509586
             </a>
-            <a href="mailto:alphainvestmentmnt@gmail.com" className="flex items-center gap-2 hover:text-primary transition-colors">
+            <a href="mailto:info@alphaaim.in" className="flex items-center gap-2 hover:text-primary transition-colors">
               <Mail className="h-4 w-4" />
-              alphainvestmentmnt@gmail.com
+              info@alphaaim.in
             </a>
           </div>
           <div className="text-muted-foreground">
@@ -52,11 +54,10 @@ export function Navbar() {
 
       {/* Main navbar */}
       <motion.header
-        className={`sticky top-0 z-50 transition-all duration-300 ${
-          scrolled
-            ? "bg-background/95 backdrop-blur-xl border-b border-border shadow-lg"
-            : "bg-transparent"
-        }`}
+        className={`sticky top-0 z-50 transition-all duration-300 ${scrolled
+          ? "bg-background/95 backdrop-blur-xl border-b border-border shadow-lg"
+          : "bg-transparent"
+          }`}
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.5 }}
@@ -80,11 +81,10 @@ export function Navbar() {
                 <Link
                   key={link.href}
                   to={link.href}
-                  className={`relative text-sm font-medium transition-colors hover:text-primary ${
-                    location.pathname === link.href
-                      ? "text-primary"
-                      : "text-foreground/80"
-                  }`}
+                  className={`relative text-sm font-medium transition-colors hover:text-primary ${location.pathname === link.href
+                    ? "text-primary"
+                    : "text-foreground/80"
+                    }`}
                 >
                   {link.label}
                   {location.pathname === link.href && (
@@ -134,11 +134,10 @@ export function Navbar() {
                   >
                     <Link
                       to={link.href}
-                      className={`block py-3 px-4 rounded-lg text-sm font-medium transition-colors ${
-                        location.pathname === link.href
-                          ? "bg-primary/10 text-primary"
-                          : "text-foreground hover:bg-secondary"
-                      }`}
+                      className={`block py-3 px-4 rounded-lg text-sm font-medium transition-colors ${location.pathname === link.href
+                        ? "bg-primary/10 text-primary"
+                        : "text-foreground hover:bg-secondary"
+                        }`}
                     >
                       {link.label}
                     </Link>

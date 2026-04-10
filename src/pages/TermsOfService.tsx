@@ -104,7 +104,7 @@ const TermsOfService = () => {
               <h2 className="text-2xl font-bold mb-4">9. Contact Information</h2>
               <p className="text-muted-foreground leading-relaxed">
                 If you have any questions about these Terms of Service, please contact us at:<br />
-                <strong>Email:</strong> alphainvestmentmnt@gmail.com<br />
+                <strong>Email:</strong> info@alphaaim.in<br />
                 <strong>Phone:</strong> +91 9607509586<br />
                 <strong>Address:</strong> Dwarka City Sector 2A, Mahalunge Ingale, Chakan, Pune, Maharashtra 410501
               </p>

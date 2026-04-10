@@ -115,7 +115,7 @@ const Disclaimer = () => {
               <h2 className="text-2xl font-bold mb-4">10. Questions or Concerns</h2>
               <p className="text-muted-foreground leading-relaxed">
                 If you have any questions or concerns regarding this disclaimer, please contact us at:<br />
-                <strong>Email:</strong> alphainvestmentmnt@gmail.com<br />
+                <strong>Email:</strong> info@alphaaim.in<br />
                 <strong>Phone:</strong> +91 9607509586<br />
                 <strong>Address:</strong> 1st Floor (Above Subhedar Biryani), Mahalungeker Complex, Mahalunge Kaman, Chakan-Talegaon Highway, Chakan, Pune 410501
               </p>

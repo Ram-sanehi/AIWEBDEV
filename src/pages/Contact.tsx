@@ -3,15 +3,16 @@ import { Navbar } from "@/components/Navbar";
 import { StockTicker } from "@/components/StockTicker";
 import { Footer } from "@/components/Footer";
 import { ContactForm } from "@/components/ContactForm";
-import { 
-  MapPin, 
-  Phone, 
-  Mail, 
-  Clock, 
-  Facebook, 
-  Twitter, 
-  Linkedin, 
-  Instagram 
+import { SEO } from "@/components/SEO";
+import {
+  MapPin,
+  Phone,
+  Mail,
+  Clock,
+  Facebook,
+  Twitter,
+  Linkedin,
+  Instagram
 } from "lucide-react";
 
 const contactInfo = [
@@ -29,8 +30,8 @@ const contactInfo = [
   {
     icon: Mail,
     title: "Email Us",
-    details: ["alphainvestmentmnt@gmail.com"],
-    links: ["mailto:alphainvestmentmnt@gmail.com"],
+    details: ["info@alphaaim.in"],
+    links: ["mailto:info@alphaaim.in"],
   },
   {
     icon: Clock,
@@ -42,11 +43,15 @@ const contactInfo = [
 const Contact = () => {
   return (
     <div className="min-h-screen bg-background pb-20">
+      <SEO
+        title="Contact Us"
+        description="Get in touch with Alpha Investment Management for expert financial advice and wealth management services."
+      />
       <Navbar />
       <StockTicker />
 
       {/* Hero Section */}
-      <section className="py-24 hero-gradient relative overflow-hidden">
+      <section className="py-12 lg:py-20 hero-gradient relative overflow-hidden">
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
         </div>
@@ -61,7 +66,7 @@ const Contact = () => {
               <span className="gold-text">Financial Journey</span>
             </h1>
             <p className="text-lg text-muted-foreground">
-              Have questions about our services? Want to schedule a consultation? 
+              Have questions about our services? Want to schedule a consultation?
               We're here to help you every step of the way.
             </p>
           </motion.div>
@@ -69,7 +74,7 @@ const Contact = () => {
       </section>
 
       {/* Contact Section */}
-      <section className="py-24">
+      <section className="py-12 lg:py-20">
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-3 gap-12">
             {/* Contact Info */}
@@ -93,7 +98,7 @@ const Contact = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.1 }}
-                  className="flex gap-4"
+                  className="flex gap-4 group hover:scale-[1.02] transition-transform duration-300"
                 >
                   <div className="w-12 h-12 rounded-xl gold-gradient flex items-center justify-center shrink-0">
                     <item.icon className="h-6 w-6 text-primary-foreground" />

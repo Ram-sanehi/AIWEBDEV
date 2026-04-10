@@ -6,6 +6,7 @@ import contactRoutes from './routes/contact.js';
 import portfolioRoutes from './routes/portfolio.js';
 import priceAlertRoutes from './routes/priceAlert.js';
 import blogRoutes from './routes/blog.js';
+import stocksRoutes from './routes/stocks.js';
 
 dotenv.config();
 
@@ -36,6 +37,7 @@ app.use('/api/contact', contactRoutes);
 app.use('/api/portfolio', portfolioRoutes);
 app.use('/api/price-alerts', priceAlertRoutes);
 app.use('/api/blog', blogRoutes);
+app.use('/api/stocks', stocksRoutes);
 
 app.listen(PORT, () => {
   console.log(`🚀 Server running on http://localhost:${PORT}`);

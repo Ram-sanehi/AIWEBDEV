@@ -1,16 +1,19 @@
 # AlphaAIM - AI-Powered Financial Advisory Platform
 
-A comprehensive financial advisory platform with investment tools, portfolio simulation, and market analysis features.
+A comprehensive financial advisory platform with investment tools, portfolio simulation, and market analysis features powered by real-time stock prices.
 
 ## 🚀 Features
 
 - **Contact Management** - Store and manage user inquiries
 - **Blog System** - Financial education content
-- **Portfolio Simulator** - Simulate investment scenarios
-- **Price Alerts** - Track stock price movements
-- **SIP Calculator** - Systematic Investment Plan calculations
+- **Portfolio Simulator** - Simulate investment scenarios with live stock prices
+- **Price Alerts** - Track stock price movements in real-time
+- **SIP Calculator** - Accurate Systematic Investment Plan calculations
 - **Risk Analyzer** - Assess investment risk profiles
+- **Stock Ticker** - Live market data with price movements
+- **Real-Time Pricing** - Integrated stock price API with caching
 - **Responsive Design** - Modern UI with Tailwind CSS
+- **Database Integration** - MySQL for persistent storage
 
 ## 🛠️ Tech Stack
 

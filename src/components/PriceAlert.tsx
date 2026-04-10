@@ -3,39 +3,55 @@ import { motion } from "framer-motion";
 import { Bell, BellRing, CheckCircle2, AlertTriangle } from "lucide-react";
 import { toast } from "sonner";
 import { createPriceAlert, getPriceAlerts } from "@/api/priceAlert";
+import { fetchAllStocks } from "@/api/stocks";
 
-const STOCKS = [
-    { symbol: "RELIANCE", name: "Reliance Industries", price: 2890.50 },
-    { symbol: "TCS", name: "Tata Consultancy", price: 4120.75 },
-    { symbol: "HDFCBANK", name: "HDFC Bank", price: 1945.80 },
-    { symbol: "INFY", name: "Infosys Limited", price: 1678.35 },
-    { symbol: "ICICIBANK", name: "ICICI Bank", price: 1234.20 },
-    { symbol: "BHARTIARTL", name: "Bharti Airtel", price: 1456.90 },
-    { symbol: "SBIN", name: "State Bank of India", price: 845.30 },
-    { symbol: "WIPRO", name: "Wipro Limited", price: 685.45 },
-];
+interface Stock {
+  symbol: string;
+  name: string;
+  price: number;
+}
 
 interface Alert {
-    id: string;
-    stockSymbol: string;
-    stockName: string;
-    targetPrice: number;
-    alertType: "above" | "below";
-    alertEmail: string;
-    triggered: boolean;
+  id: string;
+  stockSymbol: string;
+  stockName: string;
+  targetPrice: number;
+  alertType: "above" | "below";
+  alertEmail: string;
+  triggered: boolean;
 }
 
 const fmt = (n: number) =>
     "₹" + n.toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
 export function PriceAlert() {
-    const [symbol, setSymbol] = useState(STOCKS[0].symbol);
+    const [stocks, setStocks] = useState<Stock[]>([]);
+    const [symbol, setSymbol] = useState("");
     const [targetPrice, setTarget] = useState("");
     const [alertType, setAlertType] = useState<"above" | "below">("above");
     const [email, setEmail] = useState("");
     const [alerts, setAlerts] = useState<Alert[]>([]);
     const [loading, setLoading] = useState(false);
+    const [stocksLoading, setStocksLoading] = useState(true);
     const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+    // Load stocks from API
+    useEffect(() => {
+      const loadStocks = async () => {
+        try {
+          const data = await fetchAllStocks();
+          setStocks(data);
+          if (data.length > 0 && !symbol) {
+            setSymbol(data[0].symbol);
+          }
+          setStocksLoading(false);
+        } catch (error) {
+          console.error("Error loading stocks:", error);
+          setStocksLoading(false);
+        }
+      };
+      loadStocks();
+    }, []);
 
     const fetchAlerts = async () => {
         try {
@@ -63,9 +79,11 @@ export function PriceAlert() {
 
         intervalRef.current = setInterval(async () => {
             let activeAlerts: Alert[] = [];
+            let currentStocks: Stock[] = [];
+            
             try {
-                const data = await getPriceAlerts();
-                activeAlerts = data.map((a) => ({
+                const alertData = await getPriceAlerts();
+                activeAlerts = alertData.map((a) => ({
                     id: a.id,
                     stockSymbol: a.stock_symbol,
                     stockName: a.stock_name,
@@ -74,15 +92,19 @@ export function PriceAlert() {
                     alertEmail: a.alert_email,
                     triggered: a.triggered,
                 }));
+                
+                // Fetch latest stock prices
+                currentStocks = await fetchAllStocks();
             } catch (error) {
                 const local = localStorage.getItem("price_alerts");
                 if (local) {
                     activeAlerts = JSON.parse(local);
                 }
+                currentStocks = stocks;
             }
 
             for (const alertInfo of activeAlerts) {
-                const stock = STOCKS.find((s) => s.symbol === alertInfo.stockSymbol);
+                const stock = currentStocks.find((s) => s.symbol === alertInfo.stockSymbol);
                 if (!stock) continue;
 
                 const shouldFire =
@@ -104,16 +126,21 @@ export function PriceAlert() {
         return () => {
             if (intervalRef.current) clearInterval(intervalRef.current);
         };
-    }, []);
+    }, [stocks]);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!targetPrice || !email) {
+        if (!targetPrice || !email || !symbol) {
             toast.error("Please fill in all fields.");
             return;
         }
 
-        const stock = STOCKS.find((s) => s.symbol === symbol)!;
+        const stock = stocks.find((s) => s.symbol === symbol);
+        if (!stock) {
+          toast.error("Stock not found.");
+          return;
+        }
+        
         setLoading(true);
 
         try {
@@ -170,8 +197,10 @@ export function PriceAlert() {
                                     value={symbol}
                                     onChange={(e) => setSymbol(e.target.value)}
                                     className="w-full bg-slate-900 border border-slate-600 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-yellow-500 text-sm"
+                                    disabled={stocksLoading}
                                 >
-                                    {STOCKS.map((s) => (
+                                    <option value="">Select Stock...</option>
+                                    {stocks.map((s) => (
                                         <option key={s.symbol} value={s.symbol}>
                                             {s.symbol} – Current: {fmt(s.price)}
                                         </option>

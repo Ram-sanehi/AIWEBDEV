@@ -4,20 +4,19 @@ import { TrendingUp, TrendingDown, Calculator, Plus, Trash2 } from "lucide-react
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
 import { toast } from "sonner";
 import { savePortfolioSimulation, getPortfolioSimulations } from "@/api/portfolio";
+import { fetchAllStocks, fetchStockPrice } from "@/api/stocks";
 
-// Reuse the same stock list already in StockTicker so we always have a price source
-const AVAILABLE_STOCKS = [
-  { symbol: "RELIANCE", name: "Reliance Industries", price: 2890.50 },
-  { symbol: "TCS", name: "Tata Consultancy", price: 4120.75 },
-  { symbol: "HDFCBANK", name: "HDFC Bank", price: 1945.80 },
-  { symbol: "INFY", name: "Infosys Limited", price: 1678.35 },
-  { symbol: "ICICIBANK", name: "ICICI Bank", price: 1234.20 },
-  { symbol: "BHARTIARTL", name: "Bharti Airtel", price: 1456.90 },
-  { symbol: "SBIN", name: "State Bank of India", price: 845.30 },
-  { symbol: "WIPRO", name: "Wipro Limited", price: 685.45 },
-  { symbol: "SENSEX", name: "BSE Sensex", price: 77234.56 },
-  { symbol: "NIFTY", name: "Nifty 50", price: 23456.45 },
+// Mock stock list (will be replaced with API calls)
+const STOCK_SYMBOLS = [
+  "RELIANCE", "TCS", "HDFCBANK", "INFY", "ICICIBANK",
+  "BHARTIARTL", "SBIN", "WIPRO", "SENSEX", "NIFTY"
 ];
+
+interface Stock {
+  symbol: string;
+  name: string;
+  price: number;
+}
 
 interface SimResult {
   id?: string;
@@ -41,19 +40,39 @@ const fmt = (n: number) =>
   "₹" + n.toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
 export function PortfolioSimulator() {
-  const [symbol, setSymbol] = useState(AVAILABLE_STOCKS[0].symbol);
+  const [symbol, setSymbol] = useState(STOCK_SYMBOLS[0]);
+  const [availableStocks, setAvailableStocks] = useState<Stock[]>([]);
   const [amount, setAmount] = useState("");
   const [buyDate, setBuyDate] = useState("");
   const [buyPrice, setBuyPrice] = useState("");
   const [result, setResult] = useState<SimResult | null>(null);
   const [history, setHistory] = useState<SimResult[]>([]);
   const [loading, setLoading] = useState(false);
+  const [stocksLoading, setStocksLoading] = useState(true);
 
-  // Pre-fill current price when stock is selected
+  // Load stocks from API
   useEffect(() => {
-    const stock = AVAILABLE_STOCKS.find((s) => s.symbol === symbol);
-    if (stock) setBuyPrice(stock.price.toString());
+    const loadStocks = async () => {
+      try {
+        const stocks = await fetchAllStocks();
+        setAvailableStocks(stocks);
+        setStocksLoading(false);
+        // Set current price when stock is selected
+        const stock = stocks.find(s => s.symbol === symbol);
+        if (stock) setBuyPrice(stock.price.toString());
+      } catch (error) {
+        console.error("Error loading stocks:", error);
+        setStocksLoading(false);
+      }
+    };
+    loadStocks();
   }, []);
+
+  // Update buy price when symbol changes
+  useEffect(() => {
+    const stock = availableStocks.find(s => s.symbol === symbol);
+    if (stock) setBuyPrice(stock.price.toString());
+  }, [symbol, availableStocks]);
 
   const fetchHistory = async () => {
     try {
@@ -88,7 +107,12 @@ export function PortfolioSimulator() {
       return;
     }
 
-    const stock = AVAILABLE_STOCKS.find((s) => s.symbol === symbol)!;
+    const stock = availableStocks.find((s) => s.symbol === symbol);
+    if (!stock) {
+      toast.error("Stock not found.");
+      return;
+    }
+
     const invested = parseFloat(amount);
     const bp = parseFloat(buyPrice);
     if (isNaN(invested) || isNaN(bp) || invested <= 0 || bp <= 0) {
@@ -185,12 +209,13 @@ export function PortfolioSimulator() {
                   value={symbol}
                   onChange={(e) => {
                     setSymbol(e.target.value);
-                    const st = AVAILABLE_STOCKS.find((s) => s.symbol === e.target.value);
+                    const st = availableStocks.find((s) => s.symbol === e.target.value);
                     if (st) setBuyPrice(st.price.toString());
                   }}
                   className="w-full bg-slate-900 border border-slate-600 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-yellow-500 text-sm"
+                  disabled={stocksLoading}
                 >
-                  {AVAILABLE_STOCKS.map((s) => (
+                  {availableStocks.map((s) => (
                     <option key={s.symbol} value={s.symbol}>
                       {s.symbol} – {s.name}
                     </option>
